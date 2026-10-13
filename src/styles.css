@@ -1,0 +1,143 @@
+@import 'tailwindcss';
+
+/* Palette: warm ivory page, deep forest panels, sage/olive accents, restrained gold.
+   Values live in CSS variables so the dark theme can swap them. */
+:root {
+  --bg: #f5f1e6;
+  --card: #fbf8f0;
+  --sand: #ece6d3;
+  --ink: #1e2a23;
+  --on-ink: #f5f1e6;
+  --muted: #4f5a4a;
+  --line: #cfc8b0;
+  --sage: #56633a; /* olive, readable as text on ivory */
+  --sage-soft: #8c9c7a;
+  --gold: #b08a2e;
+  --gold-soft: #ddb962;
+  --forest: #22372c;
+  --panel: #22372c;
+  --panel-fg: #f5f1e6;
+}
+
+:root[data-theme='dark'] {
+  --bg: #17211b;
+  --card: #1f2c24;
+  --sand: #1c2820;
+  --ink: #eee9d9;
+  --on-ink: #17211b;
+  --muted: #b4bca8;
+  --line: #34443a;
+  --sage: #b3c48a;
+  --sage-soft: #8c9c7a;
+  --gold: #ddb962;
+  --gold-soft: #ddb962;
+  --forest: #0f1813;
+  --panel: #0f1813;
+  --panel-fg: #eee9d9;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-sand: var(--sand);
+  --color-ink: var(--ink);
+  --color-on-ink: var(--on-ink);
+  --color-muted: var(--muted);
+  --color-border: var(--line);
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-forest: var(--forest);
+  --color-panel: var(--panel);
+  --color-panel-fg: var(--panel-fg);
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces', Georgia, ui-serif, serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+    color-scheme: light;
+  }
+
+  html[data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    margin: 0;
+    min-width: 320px;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  :focus-visible {
+    @apply outline-3 outline-offset-2 outline-gold;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--gold-soft) 45%, transparent);
+  }
+}
+
+@layer utilities {
+  .section-pad {
+    @apply px-5 sm:px-8 lg:px-12;
+  }
+
+  .container-page {
+    @apply mx-auto w-full max-w-6xl;
+  }
+
+  .heading-display {
+    @apply font-display font-semibold tracking-tight text-ink;
+  }
+
+  /* Hero chart animation */
+  .draw-line {
+    stroke-dasharray: 900;
+    stroke-dashoffset: 900;
+    animation: draw-line 2.4s 0.3s ease-out forwards;
+  }
+
+  .hero-bar {
+    transform-origin: bottom;
+    transform-box: fill-box;
+    animation: grow-bar 0.9s ease-out backwards;
+  }
+}
+
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes grow-bar {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-line {
+    stroke-dashoffset: 0;
+  }
+}
